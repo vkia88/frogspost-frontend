@@ -1,3 +1,10 @@
+import { Box, Container, CssBaseline } from "@mui/material";
+
 export default function Locker() {
-  return <div>Locker</div>;
+  return (
+    <>
+      <CssBaseline />
+      <Container fixed>Locker</Container>
+    </>
+  );
 }
