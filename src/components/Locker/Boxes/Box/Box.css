@@ -1,0 +1,24 @@
+.box {
+  display: inline-flex;
+  width: 100px;
+  background-color: tomato;
+  margin: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.A {
+  height: 25px;
+}
+
+.B {
+  height: 50px;
+}
+
+.C {
+  height: 100px;
+}
+
+.empty {
+  background-color: lime;
+}

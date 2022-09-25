@@ -12,6 +12,7 @@ export default function Terminal() {
 
   return (
     <>
+      <h2>Terminal</h2>
       <ButtonGroup
         variant="contained"
         aria-label="outlined primary button group"
