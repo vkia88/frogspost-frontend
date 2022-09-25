@@ -1,5 +1,4 @@
 import { Box as BoxType } from "../../../../redux/feature/boxes";
-import classnames from "classnames";
 import "./Box.css";
 import classNames from "classnames";
 
