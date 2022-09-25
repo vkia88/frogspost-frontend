@@ -1,9 +1,14 @@
 import { Button, ButtonGroup } from "@mui/material";
-import { useState } from "react";
 import { TerminalType } from "../../../constants/TerminalType";
+import {
+  selectDeposit,
+  selectPickup,
+} from "../../../redux/feature/terminalTypeSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 export default function Terminal() {
-  const [type, setType] = useState<TerminalType>(TerminalType.DEPOSIT);
+  const terminalType = useAppSelector((state) => state.terminalType.value);
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -11,10 +16,10 @@ export default function Terminal() {
         variant="contained"
         aria-label="outlined primary button group"
       >
-        <Button onClick={() => setType(TerminalType.DEPOSIT)}>Deposit</Button>
-        <Button onClick={() => setType(TerminalType.PICKUP)}>Pick Up</Button>
+        <Button onClick={() => dispatch(selectDeposit())}>Deposit</Button>
+        <Button onClick={() => dispatch(selectPickup())}>Pick Up</Button>
       </ButtonGroup>
-      {type === TerminalType.DEPOSIT ? "Deposit" : "Pick Up"}
+      {terminalType === TerminalType.DEPOSIT ? "Deposit" : "Pick Up"}
     </>
   );
 }
