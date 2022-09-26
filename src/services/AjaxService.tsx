@@ -15,6 +15,10 @@ class AjaxService {
   get = async (endpoint: string) => {
     return await axios.get(this.server + endpoint).catch(this.catch);
   };
+
+  post = async (endpoint: string, data: Object) => {
+    return await axios.post(this.server + endpoint, data).catch(this.catch);
+  };
 }
 
 const ajaxService = new AjaxService();
