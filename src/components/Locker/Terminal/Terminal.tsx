@@ -18,8 +18,18 @@ export default function Terminal() {
         variant="contained"
         aria-label="outlined primary button group"
       >
-        <Button onClick={() => dispatch(selectDeposit())}>Deposit</Button>
-        <Button onClick={() => dispatch(selectPickup())}>Pick Up</Button>
+        <Button
+          onClick={() => dispatch(selectDeposit())}
+          disabled={terminalType === TerminalType.DEPOSIT}
+        >
+          Deposit
+        </Button>
+        <Button
+          onClick={() => dispatch(selectPickup())}
+          disabled={terminalType === TerminalType.PICKUP}
+        >
+          Pick Up
+        </Button>
       </ButtonGroup>
       {terminalType === TerminalType.DEPOSIT ? <Deposit /> : "Pick Up"}
     </>
