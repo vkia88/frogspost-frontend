@@ -6,6 +6,7 @@ import { Location } from "../../redux/feature/location";
 import { setLocation } from "../../redux/feature/locationSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ajaxService from "../../services/AjaxService";
+import Box from "../Locker/Boxes/Box/Box";
 import { defaultBoxes } from "./helper";
 
 export default function Header() {
@@ -17,13 +18,27 @@ export default function Header() {
     dispatch(setBoxes(defaultBoxes));
   }
 
+  const handleLocationClick = (location: Location) => {
+    dispatch(setLocation(location));
+
+    ajaxService.get(`boxes/location/${location.id}`).then((response) => {
+      const boxes = (response as AxiosResponse).data.boxes;
+
+      for (const box of boxes) {
+        box.empty = Boolean(!box.parcelId);
+      }
+
+      dispatch(setBoxes(boxes));
+    });
+  };
+
   useEffect(() => {
     ajaxService.get("locations").then((response) => {
       const locations = (response as AxiosResponse).data;
 
       setLocations(locations as Location[]);
     });
-  }, [locations]);
+  }, []);
 
   return (
     <>
@@ -35,7 +50,7 @@ export default function Header() {
           locations.map((location) => (
             <Button
               key={location.id}
-              onClick={() => dispatch(setLocation(location))}
+              onClick={() => handleLocationClick(location)}
               variant={
                 selectedLocation?.id === location.id ? "outlined" : "text"
               }

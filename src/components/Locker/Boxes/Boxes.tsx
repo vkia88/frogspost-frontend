@@ -9,7 +9,7 @@ export default function Boxes() {
     <>
       <h2>Boxes</h2>
       {boxes.map((box) => (
-        <Box key={box.uuid} box={box as BoxType} />
+        <Box key={box.id} box={box as BoxType} />
       ))}
     </>
   );

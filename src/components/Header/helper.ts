@@ -3,32 +3,32 @@ import { Box } from "../../redux/feature/box";
 
 export const defaultBoxes = [
   {
-    uuid: 'alpha',
+    id: 'alpha',
     size: BoxSize.A,
     empty: true
   },
   {
-    uuid: 'beta',
+    id: 'beta',
     size: BoxSize.A,
     empty: true
   },
   {
-    uuid: 'gamma',
+    id: 'gamma',
     size: BoxSize.B,
     empty: true
   },
   {
-    uuid: 'delta',
+    id: 'delta',
     size: BoxSize.B,
     empty: true
   },
   {
-    uuid: 'epsilon',
+    id: 'epsilon',
     size: BoxSize.C,
     empty: true
   },
   {
-    uuid: 'zeta',
+    id: 'zeta',
     size: BoxSize.C,
     empty: true
   },
