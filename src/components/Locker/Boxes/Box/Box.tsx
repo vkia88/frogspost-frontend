@@ -1,4 +1,4 @@
-import { Box as BoxType } from "../../../../redux/feature/boxes";
+import { Box as BoxType } from "../../../../redux/feature/box";
 import "./Box.css";
 import classNames from "classnames";
 

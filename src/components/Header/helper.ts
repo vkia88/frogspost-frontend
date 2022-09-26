@@ -1,5 +1,5 @@
 import { BoxSize } from "../../constants/BoxSize";
-import { Box } from "../../redux/feature/boxes";
+import { Box } from "../../redux/feature/box";
 
 export const defaultBoxes = [
   {

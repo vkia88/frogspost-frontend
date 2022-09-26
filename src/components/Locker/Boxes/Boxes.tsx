@@ -1,4 +1,4 @@
-import { Box as BoxType } from "../../../redux/feature/boxes";
+import { Box as BoxType } from "../../../redux/feature/box";
 import { useAppSelector } from "../../../redux/hooks";
 import Box from "./Box/Box";
 

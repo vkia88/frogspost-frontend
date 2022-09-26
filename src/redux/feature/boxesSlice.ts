@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { Box } from './boxes'
+import { Box } from './box'
 
 interface BoxesState {
   value: Box[],
