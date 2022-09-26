@@ -16,7 +16,10 @@ import { useState } from "react";
 import { BoxSize } from "../../../../constants/BoxSize";
 import { Box } from "../../../../redux/feature/box";
 import { setBoxes } from "../../../../redux/feature/boxesSlice";
-import { addSuccessMessage } from "../../../../redux/feature/messageSlice";
+import {
+  addErrorMessage,
+  addSuccessMessage,
+} from "../../../../redux/feature/messageSlice";
 import { updateParcel } from "../../../../redux/feature/parcelSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import ajaxService from "../../../../services/AjaxService";
@@ -37,6 +40,23 @@ export default function Deposit() {
   const noSpace = !boxes.some((box) => box.empty);
 
   const handleSendClick = () => {
+    if (
+      !moment(until).isBetween(
+        moment().format("YYYY-MM-DD"),
+        moment().add(1, "year").format("YYYY-MM-DD"),
+        "day",
+        "[]"
+      )
+    ) {
+      dispatch(
+        addErrorMessage(
+          "Please select a date between today and one year from now"
+        )
+      );
+
+      return;
+    }
+
     ajaxService
       .post(`parcels/location/${selectedLocation?.id}/`, parcel)
       .then((response) => {
