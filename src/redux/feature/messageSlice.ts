@@ -22,11 +22,14 @@ export const messageSlice = createSlice({
     },
     addSuccessMessage: (state, action: PayloadAction<string>) => {
       state.value.push({ severity: "success", content: action.payload, id: window.crypto.randomUUID()})
+    },
+    addErrorMessage: (state, action: PayloadAction<string>) => {
+      state.value.push({ severity: "error", content: action.payload, id: window.crypto.randomUUID()})
     }
   }
 })
 
-export const { addMessage, addSuccessMessage, removeMessage } = messageSlice.actions
+export const { addMessage, addSuccessMessage, addErrorMessage, removeMessage } = messageSlice.actions
 
 export const selectMessage = (state: RootState) => state.message.value
 

@@ -6,6 +6,7 @@ import {
 } from "../../../redux/feature/terminalTypeSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import Deposit from "./Deposit/Deposit";
+import Pickup from "./Pickup/Pickup";
 
 export default function Terminal() {
   const terminalType = useAppSelector((state) => state.terminalType.value);
@@ -26,7 +27,7 @@ export default function Terminal() {
       >
         Pick Up
       </Button>
-      {terminalType === TerminalType.DEPOSIT ? <Deposit /> : "Pick Up"}
+      {terminalType === TerminalType.DEPOSIT ? <Deposit /> : <Pickup />}
     </>
   );
 }
