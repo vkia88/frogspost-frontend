@@ -12,6 +12,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment, { Moment } from "moment";
 import { useState } from "react";
+import { BoxSize } from "../../../../constants/BoxSize";
 import { updateParcel } from "../../../../redux/feature/parcelSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import ajaxService from "../../../../services/AjaxService";
@@ -22,12 +23,17 @@ export default function Deposit() {
   const parcel = useAppSelector((state) => state.parcel.value);
   const selectedLocation = useAppSelector((state) => state.location.value);
   const [until, setUntil] = useState<Moment | null>(moment());
+  const [size, setSize] = useState<BoxSize>(BoxSize.A);
 
   const noSpace = !boxes.some((box) => box.empty);
 
   const handleSendClick = () => {
-    console.log("SEND");
-    console.log(parcel);
+    const parcelUntil = until ?? moment();
+    handleUpdateParcel("until", parcelUntil.format("YYYY-MM-DD"));
+
+    const parcelSize = parcel.size ?? BoxSize.A;
+    handleUpdateParcel("size", parcelSize);
+
     ajaxService.post(`parcels/location/${selectedLocation?.id}/`, parcel);
   };
 
@@ -37,6 +43,11 @@ export default function Deposit() {
       "until",
       newValue ? newValue.format("YYYY-MM-DD") : null
     );
+  };
+
+  const handleSizeChange = (newValue: BoxSize) => {
+    setSize(newValue);
+    handleUpdateParcel("size", newValue);
   };
 
   const handleUpdateParcel = (property: string, value: string | null) => {
@@ -57,10 +68,15 @@ export default function Deposit() {
       <h3>Deposit</h3>
       <FormControl>
         <FormLabel id="box-size-label">Size*</FormLabel>
-        <RadioGroup row aria-labelledby="box-size-label" name="box-size">
+        <RadioGroup
+          row
+          aria-labelledby="box-size-label"
+          name="box-size"
+          defaultValue="A"
+        >
           <FormControlLabel
             value="A"
-            onChange={() => handleUpdateParcel("size", "A")}
+            onChange={() => handleSizeChange(BoxSize.A)}
             control={<Radio />}
             label="A"
           />
@@ -68,13 +84,13 @@ export default function Deposit() {
             value="B"
             control={<Radio />}
             label="B"
-            onChange={() => handleUpdateParcel("size", "B")}
+            onChange={() => handleSizeChange(BoxSize.B)}
           />
           <FormControlLabel
             value="C"
             control={<Radio />}
             label="C"
-            onChange={() => handleUpdateParcel("size", "C")}
+            onChange={() => handleSizeChange(BoxSize.C)}
           />
         </RadioGroup>
       </FormControl>
@@ -106,7 +122,12 @@ export default function Deposit() {
         </ButtonGroup>
       </FormControl>
       <FormControl sx={{ m: 1 }}>
-        <TextField id="username" label="Username" variant="outlined" />
+        <TextField
+          id="username"
+          label="Username"
+          variant="outlined"
+          onChange={(event) => handleUpdateParcel("name", event.target.value)}
+        />
       </FormControl>
       <FormControl sx={{ m: 1 }}>
         <TextField
@@ -114,6 +135,9 @@ export default function Deposit() {
           type="password"
           label="Password"
           variant="outlined"
+          onChange={(event) =>
+            handleUpdateParcel("password", event.target.value)
+          }
         />
       </FormControl>
       <FormControl sx={{ m: 1 }}>
