@@ -1,12 +1,12 @@
 import { Button, Container, CssBaseline, Skeleton } from "@mui/material";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
+import { Box } from "../../redux/feature/box";
 import { setBoxes } from "../../redux/feature/boxesSlice";
 import { Location } from "../../redux/feature/location";
 import { setLocation } from "../../redux/feature/locationSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ajaxService from "../../services/AjaxService";
-import Box from "../Locker/Boxes/Box/Box";
 import { defaultBoxes } from "./helper";
 
 export default function Header() {
@@ -28,7 +28,9 @@ export default function Header() {
         box.empty = Boolean(!box.parcelId);
       }
 
-      dispatch(setBoxes(boxes));
+      dispatch(
+        setBoxes(boxes.sort((a: Box, b: Box) => a.size.localeCompare(b.size)))
+      );
     });
   };
 
@@ -45,7 +47,7 @@ export default function Header() {
       <CssBaseline />
       <Container fixed>
         <h1>Locker</h1>
-        <Button onClick={loadDefaultBoxes}>Default</Button>
+        {/* <Button onClick={loadDefaultBoxes}>Default</Button> */}
         {locations.length ? (
           locations.map((location) => (
             <Button
