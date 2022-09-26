@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   ButtonGroup,
   FormControl,
@@ -11,9 +12,21 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment, { Moment } from "moment";
 import { useState } from "react";
+import { useAppSelector } from "../../../../redux/hooks";
 
 export default function Deposit() {
   const [value, setValue] = useState<Moment | null>(moment());
+  const boxes = useAppSelector((state) => state.boxes.value);
+
+  const noSpace = !boxes.some((box) => box.empty);
+
+  if (noSpace) {
+    return (
+      <Alert sx={{ m: 2 }} severity="error">
+        There is no free box!
+      </Alert>
+    );
+  }
 
   return (
     <>
