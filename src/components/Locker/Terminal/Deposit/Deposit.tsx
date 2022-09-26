@@ -14,6 +14,8 @@ import { AxiosResponse } from "axios";
 import moment, { Moment } from "moment";
 import { useState } from "react";
 import { BoxSize } from "../../../../constants/BoxSize";
+import { Box } from "../../../../redux/feature/box";
+import { setBoxes } from "../../../../redux/feature/boxesSlice";
 import { addSuccessMessage } from "../../../../redux/feature/messageSlice";
 import { updateParcel } from "../../../../redux/feature/parcelSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
@@ -39,13 +41,33 @@ export default function Deposit() {
       .post(`parcels/location/${selectedLocation?.id}/`, parcel)
       .then((response) => {
         const data = (response as AxiosResponse)
-          .data as SuccessfulDepositMessage;
+          ?.data as SuccessfulDepositMessage;
+
+        if (!data) {
+          return;
+        }
 
         dispatch(
           addSuccessMessage(
             `Successful deposit! Username: ${data.name} password: ${data.password}`
           )
         );
+
+        ajaxService
+          .get(`boxes/location/${selectedLocation?.id}`)
+          .then((response) => {
+            const boxes = (response as AxiosResponse).data.boxes;
+
+            for (const box of boxes) {
+              box.empty = Boolean(!box.parcelId);
+            }
+
+            dispatch(
+              setBoxes(
+                boxes.sort((a: Box, b: Box) => a.size.localeCompare(b.size))
+              )
+            );
+          });
       });
   };
 
