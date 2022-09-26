@@ -1,4 +1,7 @@
 import axios, { AxiosError } from "axios";
+import { addMessage } from "../redux/feature/messageSlice";
+import {} from "../redux/hooks";
+import { store } from "../redux/store";
 
 class AjaxService {
   host = "localhost";
@@ -9,7 +12,14 @@ class AjaxService {
   // Todo: authorization bearer tokens can be appended here
 
   catch = (error: AxiosError) => {
-    alert(error);
+    const dispatch = store.dispatch;
+    dispatch(
+      addMessage({
+        id: window.crypto.randomUUID(),
+        severity: "error",
+        content: error.response?.data?.toString() ?? "Unknown network error.",
+      })
+    );
   };
 
   get = async (endpoint: string) => {

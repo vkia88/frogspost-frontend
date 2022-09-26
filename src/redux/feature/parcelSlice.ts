@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import moment from 'moment'
+import { BoxSize } from '../../constants/BoxSize'
 import { RootState } from '../store'
 import { Parcel } from './parcel'
 
@@ -7,7 +9,7 @@ interface ParcelSlice {
 }
 
 const initialState: ParcelSlice = {
-  value: { until: null },
+  value: { size: BoxSize.A, until: moment().format('YYYY-MM-DD') },
 }
 
 export const parcelSlice = createSlice({

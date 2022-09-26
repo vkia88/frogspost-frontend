@@ -1,22 +1,19 @@
-import { Button, Container, CssBaseline, Skeleton } from "@mui/material";
+import { Alert, Button, Container, CssBaseline, Skeleton } from "@mui/material";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { Box } from "../../redux/feature/box";
 import { setBoxes } from "../../redux/feature/boxesSlice";
 import { Location } from "../../redux/feature/location";
 import { setLocation } from "../../redux/feature/locationSlice";
+import { removeMessage } from "../../redux/feature/messageSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ajaxService from "../../services/AjaxService";
-import { defaultBoxes } from "./helper";
 
 export default function Header() {
   const dispatch = useAppDispatch();
   const [locations, setLocations] = useState<Location[]>([]);
   const selectedLocation = useAppSelector((state) => state.location.value);
-
-  function loadDefaultBoxes() {
-    dispatch(setBoxes(defaultBoxes));
-  }
+  const messages = useAppSelector((state) => state.message.value);
 
   const handleLocationClick = (location: Location) => {
     dispatch(setLocation(location));
@@ -65,6 +62,15 @@ export default function Header() {
             <Skeleton variant="rectangular" width={100} height={40} />
           </>
         )}
+        {messages.map((message, id) => (
+          <Alert
+            severity={message.severity}
+            key={id}
+            onClose={() => dispatch(removeMessage(message.id))}
+          >
+            {message.content}
+          </Alert>
+        ))}
       </Container>
     </>
   );

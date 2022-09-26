@@ -10,12 +10,19 @@ import {
   TextField,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AxiosResponse } from "axios";
 import moment, { Moment } from "moment";
 import { useState } from "react";
 import { BoxSize } from "../../../../constants/BoxSize";
+import { addSuccessMessage } from "../../../../redux/feature/messageSlice";
 import { updateParcel } from "../../../../redux/feature/parcelSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import ajaxService from "../../../../services/AjaxService";
+
+interface SuccessfulDepositMessage {
+  name: string;
+  password: string;
+}
 
 export default function Deposit() {
   const dispatch = useAppDispatch();
@@ -28,13 +35,18 @@ export default function Deposit() {
   const noSpace = !boxes.some((box) => box.empty);
 
   const handleSendClick = () => {
-    const parcelUntil = until ?? moment();
-    handleUpdateParcel("until", parcelUntil.format("YYYY-MM-DD"));
+    ajaxService
+      .post(`parcels/location/${selectedLocation?.id}/`, parcel)
+      .then((response) => {
+        const data = (response as AxiosResponse)
+          .data as SuccessfulDepositMessage;
 
-    const parcelSize = parcel.size ?? BoxSize.A;
-    handleUpdateParcel("size", parcelSize);
-
-    ajaxService.post(`parcels/location/${selectedLocation?.id}/`, parcel);
+        dispatch(
+          addSuccessMessage(
+            `Successful deposit! Username: ${data.name} password: ${data.password}`
+          )
+        );
+      });
   };
 
   const handleUntilChange = (newValue: Moment | null) => {
